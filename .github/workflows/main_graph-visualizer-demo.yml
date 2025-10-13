@@ -64,4 +64,5 @@ jobs:
         with:
           app-name: 'graph-visualizer-demo'
           slot-name: 'Production'
-          package: backend
+          package: ./backend 
+
