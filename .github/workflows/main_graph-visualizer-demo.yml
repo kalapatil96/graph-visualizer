@@ -7,48 +7,52 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-backend:
+  deploy: # A single job to handle both backend and frontend deployment
     runs-on: ubuntu-latest
     permissions:
-      # This permission is required for OpenID Connect (OIDC)
       id-token: write
       contents: read
     steps:
       # Checkout code
       - uses: actions/checkout@v4
 
-      # Setup Node.js for backend
+      # Setup Node.js
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: '20.x'
 
+      # Install and build frontend
+      - name: Build Frontend
+        run: |
+          npm install
+          npm run build
+        working-directory: frontend
+      
       # Install backend dependencies
       - name: Install Backend Dependencies
-        working-directory: backend
         run: npm install
-
-      # Optional: run backend build/test
-      - name: Build Backend
         working-directory: backend
-        run: |
-          npm run build --if-present
 
-      # Login to Azure using the automatically created secrets
+      # Copy frontend build output into backend directory for deployment
+      - name: Copy Frontend Build to Backend
+        run: |
+          # The || true prevents the command from failing if the directory doesn't exist
+          rm -rf ./backend/frontend/dist || true 
+          mkdir -p ./backend/frontend
+          mv ./frontend/dist ./backend/frontend/
+
+      # Azure Login using the automatically created secrets
       - name: Azure Login
         uses: azure/login@v2
         with:
-          # Use the automatically generated secrets from Azure
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CEE693FDF7D24529B20271852905B421 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_728975A650F941128A144EF883EB27AC }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1450872B93EE40E9B0979A572834347D }}
 
-      # Deploy backend
-      - name: Deploy Backend to Azure
+      # Deploy the combined package to the single app service
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'graph-visualizer-demo'
-          slot-name: 'Production'
-          package: ./backend
-
-
+          app-name: 'graph-visualizer-demo' # Use your shorter App Service name
+          package: './backend'
