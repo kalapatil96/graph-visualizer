@@ -34,9 +34,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CEE693FDF7D24529B20271852905B421 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_728975A650F941128A144EF883EB27AC}}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1450872B93EE40E9B0979A572834347D }}
 
       # Deploy backend
       - name: Deploy Backend to Azure
@@ -84,4 +84,5 @@ jobs:
           app-name: 'graph-frontend'        # Replace with your frontend app name
           slot-name: 'Production'
           package: ./frontend/dist           # Vite build output folder
+
 
