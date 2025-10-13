@@ -47,7 +47,8 @@ jobs:
       - name: Deploy Backend to Azure
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'graph-backend'
+          app-name: 'graph-visualizer-demo'
           slot-name: 'Production'
           package: ./backend
+
 
