@@ -2,9 +2,13 @@
 const express = require('express');
 const graphRouter = require('./routes/graph'); // Router for /api/graph
 const cors = require('cors');
+const path = require('path');
+
+require('dotenv').config();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // Correctly uses the environment variable with a fallback
+
 
 // Enable CORS so frontend (running on a different port) can access API
 app.use(cors());
@@ -14,6 +18,14 @@ app.use(express.json());
 
 // Register the graph router at /api/graph
 app.use('/api/graph', graphRouter);
+
+// Serve the static files from the React app's dist directory
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+
+//    This serves the vue app's index.html file.
+app.get((req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+});
 
 // Catch-all route for unknown endpoints (404)
 app.use((req, res) => {

@@ -25,10 +25,12 @@ import * as d3 from 'd3';
 const svg = ref(null);             // SVG reference
 const selectedNode = ref(null);    // Selected node state
 
+const backendUrl = import.meta.env.VITE_API_URL;
+
 onMounted(async () => {
   try {
     // Fetch tree data from backend
-    const res = await fetch('http://localhost:3000/api/graph');
+    const res = await fetch(`${backendUrl}/api/graph`);
     const { tree } = await res.json();
 
     drawTree(tree); // Draw the tree
