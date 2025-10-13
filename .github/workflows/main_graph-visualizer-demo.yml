@@ -9,6 +9,10 @@ on:
 jobs:
   deploy-backend:
     runs-on: ubuntu-latest
+    permissions:
+      # This permission is required for OpenID Connect (OIDC)
+      id-token: write
+      contents: read
     steps:
       # Checkout code
       - uses: actions/checkout@v4
@@ -30,25 +34,30 @@ jobs:
         run: |
           npm run build --if-present
 
-      # Login to Azure
+      # Login to Azure using the automatically created secrets
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CEE693FDF7D24529B20271852905B421 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_728975A650F941128A144EF883EB27AC}}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_1450872B93EE40E9B0979A572834347D }}
+          # Use the automatically generated secrets from Azure
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CEE693FDF7D24529B20271852905 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CEE693FDF7D24529B20271852905 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CEE693FDF7D24529B20271852905 }}
 
       # Deploy backend
       - name: Deploy Backend to Azure
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'graph-backend'        # Replace with your backend app name
+          app-name: 'graph-backend'
           slot-name: 'Production'
-          package: ./backend               # Points to folder containing package.json
+          package: ./backend
 
   deploy-frontend:
     runs-on: ubuntu-latest
     needs: deploy-backend
+    permissions:
+      # This permission is required for OpenID Connect (OIDC)
+      id-token: write
+      contents: read
     steps:
       # Checkout code
       - uses: actions/checkout@v4
@@ -69,20 +78,19 @@ jobs:
         working-directory: frontend
         run: npm run build
 
-      # Login to Azure
+      # Login to Azure using the automatically created secrets
       - name: Azure Login
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID }}
+          # Use the automatically generated secrets from Azure
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CEE693FDF7D24529B20271852905 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_CEE693FDF7D24529B20271852905 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CEE693FDF7D24529B20271852905 }}
 
       # Deploy frontend
       - name: Deploy Frontend to Azure
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'graph-frontend'        # Replace with your frontend app name
+          app-name: 'graph-frontend'
           slot-name: 'Production'
-          package: ./frontend/dist           # Vite build output folder
-
-
+          package: ./frontend/dist
