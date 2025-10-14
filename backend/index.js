@@ -7,7 +7,7 @@ const path = require('path');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000; // Correctly uses the environment variable with a fallback
+const PORT = 3000; // Correctly uses the environment variable with a fallback
 
 
 // Enable CORS so frontend (running on a different port) can access API
@@ -23,7 +23,7 @@ app.use('/api/graph', graphRouter);
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 //    This serves the vue app's index.html file.
-app.get((req, res) => {
+app.get('', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
