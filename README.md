@@ -10,7 +10,7 @@ Frontend: Vue 3, D3.js
 
 Backend: Node.js, Express
 
-Data: JSON file (data.json), which can later be replaced with MongoDB or another database
+Data: Neo4j database
 
 ## Project Structure
 
@@ -34,24 +34,24 @@ graph-visualizer/
 
 1. Go to the backend folder:
 
-cd backend
+   cd backend
 
 2. Create `.env.local` file with the following variables:
 
-PORT=3000 # Node server port
-NEO4J_URI=bolt://localhost:7687 # Neo4j connection URI
-NEO4J_USERNAME=neo4j # Neo4j username
-NEO4J_PASSWORD=yourpassword # Neo4j password
+    PORT=3000 # Node server port
+    NEO4J_URI=bolt://localhost:7687 # Neo4j connection URI
+    NEO4J_USERNAME=neo4j # Neo4j username
+    NEO4J_PASSWORD=yourpassword # Neo4j password
 
 3. Install dependencies:
 
-npm install
+    npm install
 
 4. Start the server:
 
-node index.js
-or using nodemon:
-nodemon index.js
+    node index.js
+    or using nodemon:
+    nodemon index.js
 
 Server will run at: [http://localhost:3000](http://localhost:3000)
 API endpoint: [http://localhost:3000/api/graph](http://localhost:3000/api/graph)
@@ -60,19 +60,19 @@ API endpoint: [http://localhost:3000/api/graph](http://localhost:3000/api/graph)
 
 1. Go to the frontend folder:
 
-cd frontend
+    cd frontend
 
 2. Create a `.env.local` file with the following variables:
 
-VITE_API_BASE_URL=http://localhost:3000/api # Base URL of the backend API
+    VITE_API_BASE_URL=http://localhost:3000/api # Base URL of the backend API
 
 3. Install dependencies:
 
-npm install
+    npm install
 
 4. Start the frontend:
 
-npm run dev
+    npm run dev
 
 Frontend will run at the port shown in the terminal (usually [http://localhost:5173](http://localhost:5173))
 
