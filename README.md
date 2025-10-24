@@ -18,7 +18,7 @@ graph-visualizer/
 ├─ backend/       # Express backend
 │   ├─ controllers/
 │   ├─ routes/
-│   ├─ data.json
+│   ├─ db/
 │   └─ index.js
 └─ frontend/      # Vue frontend
 ├─ src/
