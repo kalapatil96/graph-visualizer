@@ -1,44 +1,41 @@
-// Import required modules
 const express = require('express');
-const graphRouter = require('./routes/graph'); // Router for /api/graph
+const graphRouter = require('./routes/graph');
 const cors = require('cors');
 const path = require('path');
-
 require('dotenv').config();
 
 const app = express();
-const PORT = 3000; // Correctly uses the environment variable with a fallback
+const PORT = process.env.PORT || 3000;
 
-
-// Enable CORS so frontend (running on a different port) can access API
+// CORS
 app.use(cors());
 
-// Middleware to parse JSON request bodies
+// Parse JSON
 app.use(express.json());
 
-// Register the graph router at /api/graph
+// API routes
 app.use('/api/graph', graphRouter);
 
-// Serve the static files from the React app's dist directory
+// Serve frontend
 app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
-//    This serves the vue app's index.html file.
-app.get('', (req, res) => {
+// Serve Vue app for all frontend routes
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
 });
 
-// Catch-all route for unknown endpoints (404)
+// 404 handler
 app.use((req, res) => {
   res.status(404).json({ error: 'Route not found' });
 });
 
-// Global error handler (optional, for unexpected errors)
+// Global error handler
 app.use((err, req, res, next) => {
   console.error('Global error:', err.stack);
   res.status(500).json({ error: 'Something went wrong on the server' });
 });
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
 });
