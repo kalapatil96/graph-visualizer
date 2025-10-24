@@ -30,7 +30,8 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 onMounted(async () => {
   try {
     // Fetch tree data from backend
-   const res = await fetch(`${API_BASE_URL}`);
+   const res = await fetch(`${API_BASE_URL}/graph`)
+;
     const tree = await res.json();   // backend returns the root node directly
 
     drawTree(tree);
