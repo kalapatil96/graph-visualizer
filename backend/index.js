@@ -12,7 +12,19 @@ app.use(cors());
 
 // Parse JSON
 app.use(express.json());
-
+// Test Neo4j connection route
+app.get('/api/test-neo4j', async (req, res) => {
+  const session = driver.session(); // Make sure driver is imported from db.js
+  try {
+    const result = await session.run('MATCH (n:Node) RETURN n LIMIT 5');
+    res.json(result.records.map(r => r.get('n').properties));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Neo4j connection failed' });
+  } finally {
+    await session.close();
+  }
+});
 // API routes
 app.use('/api/graph', graphRouter);
 

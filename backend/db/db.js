@@ -14,7 +14,7 @@ const user = process.env.NEO4J_USERNAME;
 const password = process.env.NEO4J_PASSWORD;
 
 if (!uri || !user || !password) {
-    console.error(`❌ Missing Neo4j credentials. Check ${envFile}`);
+    console.error(`Missing Neo4j credentials. Check ${envFile}`);
     process.exit(1);
 }
 
