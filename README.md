@@ -32,15 +32,22 @@ graph-visualizer/
 
 ### Backend
 
-Go to the backend folder:
+1. Go to the backend folder:
 
 cd backend
 
-Install dependencies:
+2. Create `.env.local` file with the following variables:
+
+PORT=3000 # Node server port
+NEO4J_URI=bolt://localhost:7687 # Neo4j connection URI
+NEO4J_USERNAME=neo4j # Neo4j username
+NEO4J_PASSWORD=yourpassword # Neo4j password
+
+3. Install dependencies:
 
 npm install
 
-Start the server:
+4. Start the server:
 
 node index.js
 or using nodemon:
@@ -51,15 +58,19 @@ API endpoint: [http://localhost:3000/api/graph](http://localhost:3000/api/graph)
 
 ### Frontend
 
-Go to the frontend folder:
+1. Go to the frontend folder:
 
 cd frontend
 
-Install dependencies:
+2. Create a `.env.local` file with the following variables:
+
+VITE_API_BASE_URL=http://localhost:3000/api # Base URL of the backend API
+
+3. Install dependencies:
 
 npm install
 
-Start the frontend:
+4. Start the frontend:
 
 npm run dev
 
@@ -72,9 +83,16 @@ The tree graph loads automatically from the backend.
 Click on any node to see its details in the sidebar.
 Click the deselect button to clear selection.
 
+## Production Deployment
+
+The app is hosted on Azure and can be accessed at:
+https://graph-visualizer-demo-dpatezf7agbeg6hh.centralindia-01.azurewebsites.net
+
+Note: The backend and frontend are served together. Neo4j database credentials are set via environment variables in Azure App Service and are not included in the repository.
+
 ## Notes
 
-Currently, the data is read from data.json, but it can later be replaced with a database.
+The data is read from Neo4j database.
 Backend has CORS enabled for easy frontend fetching.
 Code is structured to be readable and easy to extend.
 Styling can be customized in frontend/src/components/Graph.vue.
